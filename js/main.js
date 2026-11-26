@@ -3,15 +3,19 @@
    ============================================================================ */
 
 import { GameKernel } from './GameKernel.js';
+import { initViewportScaling } from './core/viewport.js';
 
 const app = new GameKernel();
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', function () {
-    app.init();
-  });
-} else {
+function boot() {
+  initViewportScaling();
   app.init();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', boot);
+} else {
+  boot();
 }
 
 export { app };

@@ -121,6 +121,8 @@ export function applyStaticDomTranslations() {
   if (typeof document === 'undefined') return;
 
   document.title = t('ui.doc.title');
+  setByIdText('orientation-hint-text', 'ui.mobile.landscape_hint');
+  setByIdAttr('btn-dismiss-orientation', 'aria-label', 'ui.mobile.dismiss_title');
 
   // Declarative attributes (if present on elements)
   if (document.querySelectorAll) {

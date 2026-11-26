@@ -5,6 +5,7 @@
 import { el, rectsOverlap, pointInRect } from '../core/dom.js';
 import { Audio } from '../core/audio.js';
 import { t } from '../i18n/index.js';
+import { getViewportScale } from '../core/viewport.js';
 
 export class DragController {
   constructor(desk) {
@@ -40,19 +41,24 @@ export class DragController {
       const canCrossReturn = docEl.id === 'doc-submission' && !!this.desk.activeStamp;
 
       if (canCrossReturn) {
+        const scale = getViewportScale();
         const rect = docEl.getBoundingClientRect();
+        const appEl = el('app');
+        const appRect = appEl ? appEl.getBoundingClientRect() : { left: 0, top: 0 };
+        const initLeft = (rect.left - appRect.left) / scale;
+        const initTop = (rect.top - appRect.top) / scale;
         const boothWin = el('booth-window-panel');
-        docEl.style.width = rect.width + 'px';
-        docEl.style.left = rect.left + 'px';
-        docEl.style.top = rect.top + 'px';
+        docEl.style.width = (docEl.offsetWidth || Math.round(rect.width / scale)) + 'px';
+        docEl.style.left = initLeft + 'px';
+        docEl.style.top = initTop + 'px';
         docEl.classList.add('doc-floating-return');
         if (boothWin) boothWin.classList.add('drop-ready');
 
         const onFloatMove = (ev) => {
-          const dx = ev.clientX - startX;
-          const dy = ev.clientY - startY;
-          docEl.style.left = rect.left + dx + 'px';
-          docEl.style.top = rect.top + dy + 'px';
+          const dx = (ev.clientX - startX) / scale;
+          const dy = (ev.clientY - startY) / scale;
+          docEl.style.left = initLeft + dx + 'px';
+          docEl.style.top = initTop + dy + 'px';
           if (boothWin) {
             const over = this.desk.stamps.isOverWindow(ev.clientX, ev.clientY, docEl.getBoundingClientRect());
             boothWin.classList.toggle('drop-hover', over);
@@ -62,6 +68,7 @@ export class DragController {
         const onFloatUp = (ev) => {
           document.removeEventListener('pointermove', onFloatMove);
           document.removeEventListener('pointerup', onFloatUp);
+          document.removeEventListener('pointercancel', onFloatUp);
           if (boothWin) boothWin.classList.remove('drop-hover');
 
           const finalRect = docEl.getBoundingClientRect();
@@ -76,23 +83,25 @@ export class DragController {
             const sr = surface.getBoundingClientRect();
             docEl.classList.remove('doc-floating-return');
             docEl.style.width = '';
-            docEl.style.left = (finalRect.left - sr.left) + 'px';
-            docEl.style.top = (finalRect.top - sr.top) + 'px';
+            docEl.style.left = ((finalRect.left - sr.left) / scale) + 'px';
+            docEl.style.top = ((finalRect.top - sr.top) / scale) + 'px';
             this.desk.layout.clampDocPosition(docEl);
           }
         };
 
         document.addEventListener('pointermove', onFloatMove);
         document.addEventListener('pointerup', onFloatUp);
+        document.addEventListener('pointercancel', onFloatUp);
         return;
       }
 
+      const scale = getViewportScale();
       const origLeft = parseFloat(docEl.style.left) || 12;
       const origTop = parseFloat(docEl.style.top) || 12;
 
       const onMove = (ev) => {
-        const dx = ev.clientX - startX;
-        const dy = ev.clientY - startY;
+        const dx = (ev.clientX - startX) / scale;
+        const dy = (ev.clientY - startY) / scale;
         docEl.style.left = origLeft + dx + 'px';
         docEl.style.top = origTop + dy + 'px';
         this.desk.layout.clampDocPosition(docEl);
@@ -104,6 +113,8 @@ export class DragController {
       const onUp = () => {
         document.removeEventListener('pointermove', onMove);
         document.removeEventListener('pointerup', onUp);
+        document.removeEventListener('pointercancel', onUp);
+        document.removeEventListener('pointercancel', onUp);
         if (docEl.id === 'doc-submission') {
           this.desk.stamps.updateUnderStampVisual();
         }
@@ -111,6 +122,8 @@ export class DragController {
 
       document.addEventListener('pointermove', onMove);
       document.addEventListener('pointerup', onUp);
+      document.addEventListener('pointercancel', onUp);
+      document.addEventListener('pointercancel', onUp);
     });
   }
 
@@ -215,6 +228,7 @@ export class DragController {
       const onUp = (ev) => {
         document.removeEventListener('pointermove', onMove);
         document.removeEventListener('pointerup', onUp);
+        document.removeEventListener('pointercancel', onUp);
         const surface = el('desk-surface');
         const analyzer = el('desk-analyzer');
         const phoneDoc = el('doc-phone');
@@ -249,9 +263,10 @@ export class DragController {
               subDoc.classList.remove('hidden', 'doc-floating-return', 'sliding-into-window', 'doc-pop-in');
               void subDoc.offsetWidth;
               subDoc.classList.add('doc-pop-in');
+              const scale = getViewportScale();
               const docW = subDoc.offsetWidth || 340;
-              subDoc.style.left = Math.round(ev.clientX - sr.left - docW / 2) + 'px';
-              subDoc.style.top = Math.round(ev.clientY - sr.top - 22) + 'px';
+              subDoc.style.left = Math.round((ev.clientX - sr.left) / scale - docW / 2) + 'px';
+              subDoc.style.top = Math.round((ev.clientY - sr.top) / scale - 22) + 'px';
               this.desk.layout.bringToFront(subDoc);
               this.desk.layout.clampDocPosition(subDoc);
               this.desk.submissionOnDesk = true;
@@ -339,6 +354,7 @@ export class DragController {
 
       document.addEventListener('pointermove', onMove);
       document.addEventListener('pointerup', onUp);
+      document.addEventListener('pointercancel', onUp);
     });
   }
 }

@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Software, Please // 软件，请过审</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -714,6 +714,12 @@
         </footer>
       </div>
     </div>
+  </div>
+
+  <div id="orientation-hint" class="orientation-hint hidden" role="status" aria-live="polite">
+    <span class="orientation-hint-icon" aria-hidden="true">📱↻</span>
+    <span id="orientation-hint-text" class="orientation-hint-text">横屏游玩体验更佳，建议旋转手机横屏查看</span>
+    <button id="btn-dismiss-orientation" class="orientation-hint-close" type="button" aria-label="关闭提示">✕</button>
   </div>
 
   <!-- Modular ES Entrypoint (run over local HTTP server, e.g. python3 -m http.server) -->

@@ -7,6 +7,10 @@ export const zhCN = {
     doc: {
       title: 'Software, Please // 软件，请过审'
     },
+    mobile: {
+      landscape_hint: '横屏游玩体验更佳，建议旋转手机横屏查看',
+      dismiss_title: '关闭提示'
+    },
     intro: {
       continue_hint: '点击屏幕或按空格继续 ▸'
     },

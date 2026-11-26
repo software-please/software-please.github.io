@@ -7,6 +7,10 @@ export const enUS = {
     doc: {
       title: 'Software, Please // App Store Audit Simulator'
     },
+    mobile: {
+      landscape_hint: 'Landscape mode recommended — rotate your device for a better view',
+      dismiss_title: 'Dismiss'
+    },
     intro: {
       continue_hint: 'Click anywhere or press Space to continue ▸'
     },

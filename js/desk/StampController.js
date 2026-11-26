@@ -215,6 +215,7 @@ export class StampController {
         const onUp = (ev) => {
           document.removeEventListener('pointermove', onMove);
           document.removeEventListener('pointerup', onUp);
+          document.removeEventListener('pointercancel', onUp);
           const zone = el('stamp-zone');
           if (zone) zone.classList.remove('drag-hover');
           const droppedOnSub = moved && isOverSubmission(ev);
@@ -235,6 +236,7 @@ export class StampController {
 
         document.addEventListener('pointermove', onMove);
         document.addEventListener('pointerup', onUp);
+        document.addEventListener('pointercancel', onUp);
       });
     });
   }
