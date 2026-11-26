@@ -1,0 +1,1 @@
+export { EndingSystem } from './EndingSystem.js';

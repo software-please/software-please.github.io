@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Software, Please // 软件，请过审</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- ==================== 0. BOOT TERMINAL (LANGUAGE SELECT) ==================== -->
+    <section id="screen-boot" class="screen">
+      <div class="boot-crt crt-scanlines">
+        <div id="boot-terminal" class="boot-terminal mono">
+          <div id="boot-line-os" class="boot-line"></div>
+          <div id="boot-line-copy" class="boot-line boot-gap-after"></div>
+          <div id="boot-line-cmd" class="boot-line"></div>
+          <div id="boot-line-prompt" class="boot-line"></div>
+          <div id="boot-options" class="boot-options">
+            <div id="boot-opt-1" class="boot-line boot-opt" data-lang-choice="1" data-lang="zh-CN"></div>
+            <div id="boot-opt-2" class="boot-line boot-opt" data-lang-choice="2" data-lang="en-US"></div>
+          </div>
+          <div id="boot-line-input" class="boot-line"><span id="boot-input-label"></span><span id="boot-input-val"></span><span id="boot-cursor" class="boot-cursor hidden">_</span></div>
+          <div id="boot-line-starting" class="boot-line boot-starting"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 1. TITLE SCREEN ==================== -->
+    <section id="screen-title" class="screen">
+      <div class="title-rule-bar"></div>
+      <div class="title-stage">
+        <div class="title-monolith">
+          <div id="title-emblem-svg" class="title-emblem-svg"></div>
+          <h1 class="game-logo">SOFTWARE, PLEASE</h1>
+          <p id="title-subtitle" class="game-subtitle">软件，请过审</p>
+        </div>
+        <nav class="title-civ-menu" aria-label="Main Menu">
+          <div class="title-civ-spine" aria-hidden="true"></div>
+          <div class="title-civ-track">
+            <button id="btn-start-work" class="civ-menu-item is-primary" type="button">开始上班</button>
+            <button id="btn-wipe-memory" class="civ-menu-item" type="button">消除记忆</button>
+            <button id="btn-title-lang" class="civ-menu-item" type="button">选择语言</button>
+            <a id="btn-title-github" class="civ-menu-item civ-menu-link" href="https://github.com/" target="_blank" rel="noopener noreferrer">
+              <span class="civ-menu-label">
+                <svg class="civ-menu-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                </svg>
+                <span>GitHub</span>
+              </span>
+            </a>
+            <a id="btn-title-bilibili" class="civ-menu-item civ-menu-link" href="https://space.bilibili.com/3546953864448166" target="_blank" rel="noopener noreferrer">
+              <span class="civ-menu-label">
+                <svg class="civ-menu-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386z"/>
+                </svg>
+                <span>Bilibili</span>
+              </span>
+            </a>
+          </div>
+        </nav>
+      </div>
+      <div class="title-footer-wrap">
+        <div id="title-tribute" class="title-tribute-box">致敬 IP, Please 和 Papers, Please</div>
+        <div class="title-rule-bar"></div>
+      </div>
+      <div id="title-version" class="title-version">early-preview 1</div>
+    </section>
+
+    <!-- ==================== 1B. OPENING STORY INTRO ==================== -->
+    <section id="screen-intro" class="screen">
+      <div id="intro-stage" class="intro-stage">
+        <div class="intro-container">
+          <div id="intro-chapter" class="intro-chapter">PROLOGUE 01 / 04</div>
+          <div id="intro-art" class="intro-art crt-scanlines"></div>
+          <div id="intro-card" class="intro-card">
+            <div id="intro-text" class="intro-text"></div>
+            <div id="intro-stamp" class="intro-stamp hidden">社会共治众测核准 // 1元/单</div>
+          </div>
+          <div class="intro-footer">
+            <span id="intro-continue-hint" class="intro-continue-hint">点击屏幕或按空格继续 ▸</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 2. MORNING NEWSPAPER ==================== -->
+    <section id="screen-newspaper" class="screen">
+      <div class="newspaper-sheet pixel-box">
+        <div class="news-masthead">
+          <div class="news-meta">
+            <span id="news-day-badge" class="badge badge-dark">DAY 1</span>
+            <span id="news-date">1226-11-21</span>
+          </div>
+          <div class="news-paper-title">应用生态早报 · APP STORE CHRONICLE</div>
+          <div class="news-price">社会共治内部简报</div>
+        </div>
+
+        <div class="news-columns">
+          <div class="news-main">
+            <h2 id="news-headline" class="news-headline">今日头条</h2>
+            <p id="news-subhead" class="news-subhead">副标题</p>
+            <div class="news-lead-row">
+              <div id="news-art" class="news-art-box"></div>
+              <div id="news-body" class="news-body"></div>
+            </div>
+            <div id="news-ticker" class="news-ticker"></div>
+          </div>
+
+          <aside class="news-briefing">
+            <h3>📌 今日众测任务简报</h3>
+            <div id="news-unlocks" class="news-unlocks"></div>
+            <div class="pay-reminder">
+              <div>常规核验：<strong>¥1.00 / 单</strong></div>
+              <div>异常驳回：<strong>¥2.50 / 单</strong></div>
+              <div class="muted">第 1 次误差警告，第 2 次起扣 ¥3.00</div>
+            </div>
+            <button id="btn-start-shift" class="btn btn-accent btn-lg">打开审核工位 →</button>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 3. MAIN WORKSPACE ==================== -->
+    <section id="screen-game" class="screen">
+      <div id="inspect-banner" class="inspect-banner hidden">
+        <span id="inspect-banner-text">🔍 检查模式：请依次点选两处高亮字段或手册条款，排查潜在规则冲突</span>
+        <div class="inspect-banner-actions">
+          <button id="btn-banner-rulebook" class="btn btn-xs btn-secondary" type="button">📖 手册</button>
+          <button id="btn-banner-interrogate" class="btn btn-xs btn-accent hidden" type="button">💬 询问</button>
+          <button id="btn-exit-inspect" class="btn btn-xs btn-secondary" type="button">✕ 退出检查</button>
+        </div>
+      </div>
+
+      <!-- Top Status HUD -->
+      <header id="hud-bar">
+        <div class="hud-left">
+          <span class="hud-brand">SOFTWARE, PLEASE</span>
+          <span id="hud-day" class="hud-pill hud-day">DAY 1</span>
+        </div>
+        <div class="hud-right">
+          <button id="dock-rulebook" class="btn btn-sm btn-secondary is-open" title="开合审核规范手册 (B)">📖 合上手册</button>
+          <button id="dock-analyzer" class="btn btn-sm btn-secondary hidden" title="开合安装包分析器">🔬 收起分析器</button>
+          <button id="dock-phone" class="btn btn-sm btn-secondary hidden" title="开合 RobotismOS 模拟器">📱 收起模拟器</button>
+          <button id="dock-reverser" class="btn btn-sm btn-secondary hidden" title="开合逆向分析器">🧬 收起逆向器</button>
+          <button id="btn-mute" class="btn btn-sm btn-secondary" title="静音切换 (M)">🔊 音效</button>
+          <button id="btn-hud-help" class="btn btn-sm btn-secondary" title="帮助">❓</button>
+          <button id="btn-back-title" class="btn btn-sm btn-secondary" title="返回标题">🏠</button>
+        </div>
+      </header>
+
+      <!-- Main Split Booth & Desk -->
+      <main id="workspace-split">
+        <!-- LEFT COLUMN: TOP QUEUE + BOTTOM BOOTH WINDOW -->
+        <aside id="left-column">
+          <!-- Top-Left: Waiting Queue Corridor -->
+          <section id="queue-bay">
+            <div class="queue-header">
+              <span>排队队列 <small id="queue-count-tag" class="queue-count-tag">待审 0/0</small></span>
+              <button id="btn-next" class="btn btn-sm btn-accent">📢 叫下一单</button>
+            </div>
+            <div id="queue-corridor" class="queue-corridor">
+              <div class="queue-empty">暂无排队应用</div>
+            </div>
+          </section>
+
+          <!-- Bottom-Left: Recessed Inspection Window -->
+          <section id="booth-window-panel">
+            <div id="booth-glass" class="booth-glass">
+              <div class="booth-slats"></div>
+              <div class="booth-applicant-stage">
+                <div class="booth-app-showcase">
+                  <div id="booth-app-icon" class="booth-app-icon-frame empty"></div>
+                </div>
+                <div id="booth-material-tray" class="booth-material-tray">
+                  <div class="material-tray-head">
+                    <span class="material-tray-title">材料列表</span>
+                    <span id="material-list-hint" class="material-list-hint">等待叫号</span>
+                  </div>
+                  <div id="booth-material-list" class="booth-material-list">
+                    <div class="material-empty">等待应用递交材料...</div>
+                  </div>
+                </div>
+              </div>
+              <div id="polygraph-panel" class="polygraph-panel hidden">
+                <div class="polygraph-header">
+                  <span id="polygraph-status" class="polygraph-status">逆向测谎待命</span>
+                  <span id="polygraph-verdict-tag" class="polygraph-verdict-tag">待逆向</span>
+                </div>
+                <pre id="polygraph-trace" class="polygraph-trace">// 点击下方【执行逆向测谎】核验开发者说辞</pre>
+                <div class="polygraph-actions-row">
+                  <button id="btn-polygraph-start" class="btn btn-xs btn-poly-go hidden" type="button">🔍 执行逆向测谎</button>
+                  <button id="btn-polygraph-ban" class="btn btn-xs btn-ban-now hidden" type="button">🔨 直接封号 +¥5.00</button>
+                </div>
+              </div>
+              <div id="booth-ban-shutter" class="booth-ban-shutter hidden">
+                <div class="ban-plaque">
+                  <div class="ban-title">账号已封禁</div>
+                  <div class="ban-code">ACCOUNT BANNED // 逆向核实欺瞒</div>
+                  <div id="ban-shutter-sub" class="ban-sub">开发者账号已拉黑</div>
+                </div>
+              </div>
+              <div id="window-drop-overlay" class="window-drop-overlay hidden">← 松手推回窗口递交裁决</div>
+            </div>
+
+            <div id="window-ledge" class="window-ledge">
+              <span id="window-ledge-hint" class="window-ledge-hint">窗口递交台</span>
+            </div>
+
+            <div id="booth-dialogue-area" class="booth-dialogue-area">
+              <div class="dialogue-status-row">
+                <span id="booth-reward-hint" class="booth-reward-hint">等待叫号...</span>
+              </div>
+              <div id="booth-dialogue-log" class="booth-dialogue-log"></div>
+            </div>
+
+            <div class="booth-under-counter">
+              <div class="booth-btn-group">
+                <button id="btn-inspect-mode" class="intercom-btn" disabled title="开启全屏检查遮罩比对规则冲突 (I)">
+                  <span class="intercom-grille"></span>
+                  <span class="intercom-label">检查</span>
+                </button>
+                <button id="btn-interrogate" class="intercom-btn interrogate-btn" disabled title="就已发现的冲突询问开发者 (Q)">
+                  <span class="interrogate-dot"></span>
+                  <span class="intercom-label">询问</span>
+                </button>
+                <button id="btn-polygraph" class="intercom-btn polygraph-btn hidden" disabled title="对原始包进行逆向分析核验是否撒谎 (P)">
+                  <span class="polygraph-led"></span>
+                  <span class="intercom-label">测谎</span>
+                </button>
+                <button id="btn-ban" class="intercom-btn ban-btn hidden" disabled title="在模拟器/逆向层面确认撒谎后直接封号 (+¥5.00)">
+                  <span class="ban-led"></span>
+                  <span class="intercom-label">封号</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="booth-footer">
+              <span id="booth-date-str" class="booth-date-str inspectable" data-inspect-key="today_date" data-inspect-label="当前审核日期">1226.11.22 星期日</span>
+              <span id="booth-clock-led" class="booth-clock-led">09:00</span>
+            </div>
+          </section>
+        </aside>
+
+        <!-- RIGHT COLUMN: PHYSICAL DESK -->
+        <section id="right-column">
+          <header id="desk-banner" class="desk-banner">
+            <div class="desk-banner-top">
+              <div class="desk-banner-org">
+                <span class="itssa-seal">ITSSA</span>
+                <span class="desk-banner-title">银标联盟 (ITSSA) 应用审核平台</span>
+              </div>
+              <span class="desk-banner-footnote">最终解释权归 ITSSA 所有</span>
+            </div>
+            <div class="desk-banner-slogan">共建开放生态 · 服务于开发者 · 提升用户体验</div>
+          </header>
+
+          <div id="desk-surface">
+            <div class="desk-empty-watermark">SOFTWARE, PLEASE // WORKBENCH</div>
+            <div id="inspect-desk-mask" class="inspect-desk-mask hidden"></div>
+
+            <!-- Analyzer Hardware (Day 2+ on desk) -->
+            <article id="desk-analyzer" class="desk-doc analyzer-doc hidden" data-doc-id="desk-analyzer">
+              <div class="doc-drag-handle">
+                <span>🔬 安装包分析器</span>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <span id="analyzer-status-tag" class="doc-mini-tag">待机</span>
+                  <button id="btn-close-analyzer" class="doc-close-btn" type="button" title="收起安装包分析器">✕</button>
+                </div>
+              </div>
+              <div class="doc-body analyzer-body">
+                <div id="analyzer-slot" class="analyzer-slot">
+                  <div class="analyzer-slot-icon">📥</div>
+                  <div id="analyzer-slot-text" class="analyzer-slot-text">将左侧【应用原始包】拖入此处解析</div>
+                </div>
+                <div id="analyzer-progress" class="analyzer-progress hidden">
+                  <div class="analyzer-progress-bar"></div>
+                </div>
+                <div id="analyzer-output-hint" class="analyzer-output-hint">自动输出静态分析清单</div>
+              </div>
+            </article>
+
+            <!-- Reverse Analyzer Hardware (Day 3+ on desk) -->
+            <article id="desk-reverser" class="desk-doc reverser-doc hidden" data-doc-id="desk-reverser">
+              <div class="doc-drag-handle">
+                <span>🧬 逆向分析器</span>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <span id="reverser-status-tag" class="doc-mini-tag">待机</span>
+                  <button id="btn-close-reverser" class="doc-close-btn" type="button" title="收起逆向分析器">✕</button>
+                </div>
+              </div>
+              <div class="doc-body reverser-body">
+                <div id="reverser-slot" class="reverser-slot">
+                  <div class="reverser-slot-icon">🧪</div>
+                  <div id="reverser-slot-text" class="reverser-slot-text">将左侧【应用原始包】拖入此处逆向拆包</div>
+                </div>
+                <div id="reverser-progress" class="reverser-progress hidden">
+                  <div class="reverser-progress-bar"></div>
+                </div>
+                <div id="reverser-inspect-wrap" class="reverser-inspect-wrap hidden" data-inspect-key="reverse_code" data-inspect-label="逆向反编译代码">
+                  <div class="reverser-sublabel">🧬 反编译代码片段</div>
+                  <pre id="reverser-code" class="reverser-code"></pre>
+                </div>
+                <div id="reverser-output-hint" class="reverser-output-hint">反编译调用链 · 核验开发者是否撒谎</div>
+              </div>
+            </article>
+
+            <!-- Doc 0: RobotismOS Emulator (Day 3+ on desk) -->
+            <article id="doc-phone" class="desk-doc phone-doc hidden" data-doc-id="doc-phone">
+              <div class="doc-drag-handle">
+                <span id="phone-doc-title">📱 RobotismOS 模拟器（基础版）</span>
+                <div class="phone-badges">
+                  <span id="phone-round-badge" class="badge hidden">第1轮</span>
+                  <span id="phone-env-badges" class="phone-env-badges"></span>
+                  <button id="btn-close-phone" class="doc-close-btn" type="button" title="收起 RobotismOS 模拟器">✕</button>
+                </div>
+              </div>
+              <div class="doc-body phone-doc-body">
+                <div id="phone-chassis" class="phone-chassis">
+                  <div class="phone-speaker-notch"></div>
+                  <div class="phone-inspect-wrap inspectable" data-inspect-key="sniffer" data-inspect-label="RobotismOS 模拟器画面">
+                    <div class="phone-sublabel">📱 RobotismOS 模拟器</div>
+                    <div id="phone-screen" class="phone-screen crt-scanlines">
+                      <div class="phone-idle">将左侧【应用原始包】拖入此模拟器安装</div>
+                    </div>
+                  </div>
+                  <div class="phone-home-dot"></div>
+                </div>
+
+                <div class="phone-controls-col">
+                  <button id="btn-phone-reboot" class="btn btn-sm btn-warn env-reboot-btn" type="button" disabled>🔄 重启沙盒</button>
+
+                  <div id="sensor-sim-box" class="sensor-sim-box hidden">
+                    <div class="sensor-group">
+                      <div class="sensor-group-head">
+                        <span id="sensor-gyro-label" class="env-group-label">陀螺仪模拟</span>
+                        <span id="gyro-angle-val" class="sensor-val-tag sensor-val-gyro">0°</span>
+                      </div>
+                      <input id="slider-gyro" class="sensor-slider" type="range" min="0" max="60" step="1" value="0" disabled>
+                      <div class="sensor-scale-row">
+                        <span>0°</span>
+                        <span>15°</span>
+                        <span class="scale-limit">35°</span>
+                        <span>60°</span>
+                      </div>
+                    </div>
+
+                    <div class="sensor-group">
+                      <div class="sensor-group-head">
+                        <span id="sensor-compass-label" class="env-group-label">指南针模拟</span>
+                        <span id="compass-dir-val" class="sensor-val-tag sensor-val-compass">北 N 0°</span>
+                      </div>
+                      <input id="slider-compass" class="sensor-slider" type="range" min="0" max="359" step="1" value="0" disabled>
+                      <div class="sensor-scale-row">
+                        <span>N 0°</span>
+                        <span>E 90°</span>
+                        <span>S 180°</span>
+                        <span>W 270°</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button id="btn-phone-shake" class="btn btn-sm btn-secondary hidden" disabled>📳 晃动测试</button>
+                  <button id="btn-phone-close-ad" class="btn btn-sm btn-secondary hidden" disabled>✕ 点广告关闭</button>
+                  <button id="btn-phone-round" class="btn btn-sm btn-warn hidden" disabled>⏩ 模拟游玩 (+1轮/15m)</button>
+                  <button id="btn-phone-hook" class="btn btn-sm btn-purple hidden" disabled>⚡ 打开配置探针</button>
+
+                  <div id="env-switcher" class="env-switcher hidden">
+                    <div class="env-group-label">网络 IP 归属地模拟</div>
+                    <select id="select-env-ip" class="env-select">
+                      <option value="xinggang">星港</option>
+                      <option value="yinwan">银湾</option>
+                      <option value="fenggu">风谷</option>
+                      <option value="shishi">石岚</option>
+                      <option value="yunsong">云松</option>
+                      <option value="chichuan">赤川</option>
+                    </select>
+                    <div id="env-reboot-hint" class="env-reboot-hint hidden">⚠️ 归属地已修改，重启沙盒后生效</div>
+                    <div class="env-group-label">开发者模式</div>
+                    <div class="env-btn-row">
+                      <button id="btn-env-dev-on" class="btn btn-xs active">开启</button>
+                      <button id="btn-env-dev-off" class="btn btn-xs">关闭</button>
+                    </div>
+                    <div id="env-age-group" class="env-age-group hidden">
+                      <div id="env-age-label" class="env-group-label">使用行为模拟</div>
+                      <div class="env-btn-row env-age-row">
+                        <button id="btn-env-age-young" class="btn btn-xs active" type="button">年轻人</button>
+                        <button id="btn-env-age-middle" class="btn btn-xs" type="button">中年人</button>
+                        <button id="btn-env-age-elder" class="btn btn-xs" type="button">老年人</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Doc 1: App Submission Card -->
+            <article id="doc-submission" class="desk-doc paper-doc hidden" data-doc-id="doc-submission">
+              <div class="doc-drag-handle">
+                <span>📋 应用上架申请单</span>
+                <span id="sub-pkg-badge" class="doc-mini-tag">com.example.app</span>
+              </div>
+              <div class="doc-body sub-body">
+                <div class="sub-header-row">
+                  <div id="sub-icon" class="sub-icon-box"></div>
+                  <div class="sub-title-meta">
+                    <div class="sub-name-block inspectable" data-inspect-key="name" data-inspect-label="应用名称">
+                      <div class="field-label">应用名称</div>
+                      <div id="sub-name" class="field-value">—</div>
+                    </div>
+                    <div class="sub-sub-row">
+                      <span>版本: <strong id="sub-version">v1.0</strong></span>
+                      <span class="sub-cat-pill inspectable" data-inspect-key="category" data-inspect-label="商店分类">分类: <strong id="sub-category">—</strong></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="sub-fields-grid">
+                  <div class="field-cell inspectable" data-inspect-key="pkg" data-inspect-label="包名 Package">
+                    <div class="field-label">包名 Package</div>
+                    <div id="sub-pkg" class="field-value mono">—</div>
+                  </div>
+                  <div class="field-cell inspectable" data-inspect-key="developer" data-inspect-label="开发主体">
+                    <div class="field-label">开发主体</div>
+                    <div id="sub-dev" class="field-value">—</div>
+                  </div>
+                  <div class="field-cell inspectable" data-inspect-key="license" data-inspect-label="软著资质号">
+                    <div class="field-label">软著资质号</div>
+                    <div id="sub-license" class="field-value mono">—</div>
+                  </div>
+                  <div id="sub-sdk-cell" class="field-cell inspectable hidden" data-inspect-key="sdk" data-inspect-label="广告 SDK">
+                    <div class="field-label">广告 SDK</div>
+                    <div id="sub-sdk" class="field-value">—</div>
+                  </div>
+                </div>
+
+                <div class="field-cell inspectable" data-inspect-key="desc" data-inspect-label="商店简介">
+                  <div class="field-label">商店简介与功能说明</div>
+                  <div id="sub-desc" class="field-desc">—</div>
+                </div>
+
+                <div id="stamp-zone" class="stamp-zone">
+                  <span class="stamp-zone-hint">把印章拖到单子上，或把单子拖到印章下方后点击盖章</span>
+                  <div id="stamp-mark" class="stamp-mark hidden"></div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Doc 2: Rulebook -->
+            <article id="doc-rulebook" class="desk-doc rulebook-doc" data-doc-id="doc-rulebook">
+              <div class="doc-drag-handle">
+                <span>📜 应用商店审核规范手册</span>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <span class="doc-mini-tag">v1226.11</span>
+                  <button id="btn-close-rulebook" class="doc-close-btn" type="button" title="合上手册 (B)">✕</button>
+                </div>
+              </div>
+              <div class="doc-body rulebook-body">
+                <div id="rulebook-bar" class="rulebook-bar">
+                  <span class="rulebook-section-title">基础规范</span>
+                  <span id="rb-page-info" class="rb-page-info">第 1 / 1 页</span>
+                </div>
+                <div id="rulebook-body" class="rulebook-content"></div>
+                <div id="rulebook-pager" class="rulebook-pager">
+                  <button id="btn-rb-prev" class="rb-page-btn" type="button">◀ 上一页</button>
+                  <div id="rb-page-nums" class="rb-page-nums"></div>
+                  <button id="btn-rb-next" class="rb-page-btn" type="button">下一页 ▶</button>
+                </div>
+              </div>
+            </article>
+
+            <!-- Doc 3: Permissions Manifest (Day 2+) -->
+            <article id="doc-manifest" class="desk-doc paper-doc hidden" data-doc-id="doc-manifest">
+              <div class="doc-drag-handle">
+                <span>🔐 RobotismManifest 解析清单</span>
+                <span class="doc-mini-tag">自动分析</span>
+              </div>
+              <div class="doc-body">
+                <div class="field-label manifest-section-label">声明的系统权限（检查模式可点选比对）</div>
+                <ul id="manifest-list" class="manifest-list"></ul>
+                <div id="manifest-sdk-box" class="manifest-sdk-box inspectable" data-inspect-key="sdk" data-inspect-label="集成广告 SDK"></div>
+                <div id="manifest-extra-box" class="manifest-extra-box hidden"></div>
+              </div>
+            </article>
+
+            <!-- Doc 5: Reverse Hook Panel (Day 6) -->
+            <article id="doc-hook" class="desk-doc hook-doc hidden" data-doc-id="doc-hook">
+              <div class="doc-drag-handle">
+                <span>⚡ 轻量配置探针</span>
+                <span id="hook-toggle-status" class="doc-mini-tag">待扫描</span>
+              </div>
+              <div class="doc-body terminal-body">
+                <p class="hook-tip">提示：可尝试将休眠的远端配置变量手动拨为 <code>true</code> 后运行观察。</p>
+                <div class="hook-inspect-wrap inspectable" data-inspect-key="hook" data-inspect-label="配置探针代码">
+                  <div class="hook-sublabel">⚡ 休眠分支片段</div>
+                  <pre id="hook-code-box" class="hook-code-box">等待载入目标安装包反编译片段...</pre>
+                </div>
+                <div class="hook-action-row">
+                  <button id="btn-hook-toggle" class="btn btn-purple" disabled>⚡ 拨动配置开关：OFF → ON</button>
+                </div>
+              </div>
+            </article>
+
+            <!-- Doc 6: Special Memo / Story Note (Day 5 / Day 6) -->
+            <article id="doc-memo" class="desk-doc memo-doc hidden" data-doc-id="doc-memo">
+              <div class="doc-drag-handle">
+                <span id="memo-title">📝 内部便签</span>
+                <span class="doc-mini-tag">机密</span>
+              </div>
+              <div id="memo-body" class="doc-body memo-body"></div>
+            </article>
+
+            <!-- Stamp Tray -->
+            <div id="stamp-tray" class="stamp-tray">
+              <div id="stamp-hint-toast" class="stamp-hint-toast hidden">请把单子拖动到印章下方</div>
+              <div class="tray-title">印章盒 (拖印章到单子 / 单子拖到印章下方点击)</div>
+              <div class="stamps-row">
+                <div id="stamp-approve" class="stamp-block stamp-approve" data-stamp="approve" title="准予上架 (APPROVED)">
+                  <div class="stamp-handle"></div>
+                  <div class="stamp-pad">✅ 准予上架</div>
+                </div>
+                <div id="stamp-reject" class="stamp-block stamp-reject" data-stamp="reject" title="驳回下架 (REJECTED)">
+                  <div class="stamp-handle"></div>
+                  <div class="stamp-pad">❌ 驳回下架</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </section>
+
+    <!-- ==================== 4. NIGHTLY LEDGER ==================== -->
+    <section id="screen-ledger" class="screen">
+      <div class="ledger-card pixel-box">
+        <div class="ledger-header">
+          <h2 id="ledger-day">DAY 1 下班结算账本</h2>
+          <span class="ledger-sub">社会共治众测日结单</span>
+        </div>
+
+        <div class="ledger-grid">
+          <div class="ledger-panel">
+            <h3>💰 今日收入与罚扣</h3>
+            <div id="ledger-rows" class="ledger-rows"></div>
+          </div>
+
+          <div class="ledger-panel">
+            <h3>🏠 每日生活开销</h3>
+            <div id="ledger-expenses" class="ledger-expenses"></div>
+            <div class="status-cards">
+              <div class="status-pill">个人状态：<strong id="ledger-self-status">精力正常</strong></div>
+              <div class="status-pill">网络与作息：<strong id="ledger-extra-status">宽带正常</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ledger-footer">
+          <div class="ledger-net-box">
+            <span>结算后结余：</span>
+            <strong id="ledger-net">¥0.00</strong>
+          </div>
+          <div id="ledger-warning" class="ledger-warning"></div>
+          <button id="btn-ledger-next" class="btn btn-accent btn-lg">确认结算 · 进入明天 →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 5. ENDING SCREEN ==================== -->
+    <section id="screen-ending" class="screen">
+      <div class="ending-card pixel-box">
+        <div id="ending-badge" class="badge badge-accent">结局解锁</div>
+        <div class="ending-hero">
+          <div id="ending-art" class="ending-art-box"></div>
+          <div class="ending-titles">
+            <h2 id="ending-title">结局标题</h2>
+            <p id="ending-subtitle" class="ending-subtitle">副标题</p>
+          </div>
+        </div>
+        <div id="ending-body" class="ending-body"></div>
+        <div id="ending-stats" class="ending-stats"></div>
+        <div class="ending-actions">
+          <button id="btn-ending-replay-d6" class="btn btn-primary hidden">↺ 重玩第 6 天体验另一结局</button>
+          <button id="btn-ending-gallery" class="btn btn-secondary hidden">🏆 查看结局图鉴</button>
+          <button id="btn-ending-title" class="btn btn-accent">🏠 返回标题页</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 5B. FULLSCREEN COMPLETION CERTIFICATE ==================== -->
+    <section id="screen-complete" class="screen">
+      <div class="title-rule-bar"></div>
+      <div class="complete-stage">
+        <article id="cert-paper" class="cert-paper">
+          <div class="cert-top-row">
+            <span id="cert-org" class="cert-org">银标联盟 (ITSSA) 生态治理众测中心</span>
+            <span id="cert-serial" class="cert-serial">编号：ITSSA-1226-1128-001</span>
+          </div>
+          <h2 id="cert-title" class="cert-title">众 测 证 明</h2>
+          <div class="cert-divider"></div>
+          <p id="cert-attestation" class="cert-attestation"></p>
+          <div id="cert-stats" class="cert-stats"></div>
+          <p id="cert-thanks-itssa" class="cert-thanks-itssa">感谢你对 ITSSA 的支持和配合。</p>
+          <div class="cert-footer-row">
+            <span id="cert-issuer-sign" class="cert-issuer-sign">ITSSA</span>
+            <span id="cert-date" class="cert-date">1226 年 11 月 28 日</span>
+          </div>
+          <div id="cert-official-seal" class="cert-seal" aria-hidden="true">
+            <div class="cert-seal-inner">
+              <span id="cert-seal-top" class="cert-seal-top">ITSSA 生态治理</span>
+              <span class="cert-seal-star">★</span>
+              <span id="cert-seal-bottom" class="cert-seal-bottom">众测专用章</span>
+            </div>
+          </div>
+        </article>
+        <div class="complete-bottom">
+          <p id="cert-thank-play" class="cert-thank-play">感谢游玩</p>
+          <button id="btn-complete-reenlist" class="btn-title-start" type="button">收下</button>
+        </div>
+      </div>
+      <div class="title-rule-bar"></div>
+    </section>
+
+    <!-- ==================== MODALS ==================== -->
+    <div id="modal-endings" class="modal-backdrop hidden">
+      <div class="modal-box pixel-box modal-wide">
+        <div class="modal-header">
+          <h3>🏆 结局图鉴</h3>
+          <button id="btn-close-gallery" class="btn btn-xs btn-secondary">✕</button>
+        </div>
+        <div id="gallery-grid" class="gallery-grid"></div>
+      </div>
+    </div>
+
+    <div id="modal-help" class="modal-backdrop hidden">
+      <div class="modal-box pixel-box">
+        <div class="modal-header">
+          <h3>❓ 众测员操作指南</h3>
+          <button id="btn-close-help" class="btn btn-xs btn-secondary">✕</button>
+        </div>
+        <div class="help-body">
+          <p><strong>1. 基本流程：</strong>点击左上角 <code>📢 叫下一单</code> → 从左侧材料列表将 <code>📋 上架申请单</code> <strong>拖到右侧桌面</strong>核验（若工位配备了分析设备，可将 <code>📦 应用原始包</code> 拖入分析器自动生成解析清单）→ 将 <code>✅ 准予上架</code> 或 <code>❌ 驳回下架</code> <strong>拖到申请单上</strong>（或<strong>把单子拖动到印章下方后点击</strong>）盖章 → 把盖好章的《上架申请单》<strong>拖回左下角窗口</strong>推回递交（也可点击亮起的窗口递交台）。</p>
+          <p><strong>2. 检查与询问：</strong>点击窗口下方 <code>检查</code>（或按 <code>I</code>）会开启检查遮罩并高亮可比对目标，依次点选任意两处材料字段、日期、权限或规范手册条款以排查潜在规则冲突；发现问题后，可点击 <code>询问</code>（或按 <code>Q</code>）向开发者发问核实。</p>
+          <p><strong>3. 计酬与误差：</strong>常规单核验准确 <code>+¥1.00</code>，异常驳回准确 <code>+¥2.50</code>。漏放或误杀会收到传票；单日第 1 次警示，第 2 次起每张扣减 <code>¥3.00</code>，满 5 张终止合作资格。</p>
+          <p><strong>4. 手册与快捷键：</strong>可点击顶部状态栏 <code>📖 合上手册 / 打开手册</code> 或按 <code>B</code> 随时开合规范手册；随着工作推进，每日早报会通知新开放的核验条目与桌面工具。快捷键：<code>M</code> 静音、<code>B</code> 开合手册、<code>I</code> 检查遮罩、<code>Q</code> 询问发问、<code>Space</code> 叫下一单。</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-whack" class="modal-backdrop hidden">
+      <div class="modal-box pixel-box modal-wide whack-modal">
+        <div class="modal-header whack-header">
+          <h3 id="whack-title">🚨 异常投诉压制台</h3>
+          <span id="whack-timer-badge" class="badge whack-timer-badge">18s</span>
+        </div>
+        <div id="whack-desc" class="whack-desc">大量用户投诉正在涌入！点击并压制冒出来的投诉卡片——每漏掉 3 条将产生 1 张违规传票！</div>
+        <div class="whack-hud">
+          <div class="whack-stat"><span id="whack-lbl-suppressed">已压制</span><strong id="whack-stat-suppressed">0</strong></div>
+          <div class="whack-stat is-warn"><span id="whack-lbl-missed">已漏出</span><strong id="whack-stat-missed">0</strong></div>
+          <div class="whack-stat is-danger"><span id="whack-lbl-citations">新增传票</span><strong id="whack-stat-citations">0</strong></div>
+        </div>
+        <div id="whack-grid" class="whack-grid"></div>
+        <div id="whack-result" class="whack-result hidden">
+          <div id="whack-result-text" class="whack-result-text"></div>
+          <button id="btn-whack-done" class="btn btn-accent" type="button">确认结果 · 继续工位 →</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-takeover" class="modal-backdrop hidden">
+      <div class="modal-box pixel-box takeover-modal">
+        <div class="modal-header whack-header">
+          <h3 id="takeover-title">🧪 模拟器消毒</h3>
+          <span id="takeover-timer-badge" class="badge whack-timer-badge">22s</span>
+        </div>
+        <div id="takeover-desc" class="whack-desc">RobotismOS 模拟器进程失控！看清真假关闭键，击穿恶意弹窗夺回控制权！</div>
+        <div class="takeover-hud">
+          <div class="whack-stat"><span id="takeover-lbl-stage">突围进度</span><strong id="takeover-stage-val">1 / 5</strong></div>
+          <div class="takeover-status-pill" id="takeover-status-text">找出唯一真正的关闭按钮</div>
+        </div>
+        <div id="takeover-phone" class="takeover-phone crt-scanlines">
+          <div id="takeover-trap-toast" class="takeover-trap-toast hidden">⚠️ 点中假按钮！触发静默下载，时间 -2s</div>
+          <div id="takeover-stage" class="takeover-stage"></div>
+          <div id="takeover-nav-bar" class="takeover-nav-bar hidden">
+            <button id="takeover-nav-back" class="takeover-nav-btn" type="button" data-takeover-trap="nav">◁ 返回</button>
+            <button id="takeover-nav-home" class="takeover-nav-btn" type="button" data-takeover-trap="nav">○ 主页</button>
+            <button id="takeover-nav-tasks" class="takeover-nav-btn" type="button" data-takeover-trap="nav">▢ 任务</button>
+          </div>
+        </div>
+        <div id="takeover-result" class="whack-result hidden">
+          <div id="takeover-result-text" class="whack-result-text"></div>
+          <button id="btn-takeover-done" class="btn btn-accent" type="button">返回工位 →</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-finale-stats" class="finale-stats-overlay hidden">
+      <div class="finale-stats-shell pixel-box">
+        <header class="finale-stats-header">
+          <div class="finale-stats-head-top">
+            <div id="finale-stats-badge" class="badge badge-accent">ITSSA // TELEMETRY REPORT</div>
+            <span id="finale-stats-page-tag" class="badge">1 / 5</span>
+          </div>
+          <h2 id="finale-stats-title">应用商店评论统计数据</h2>
+          <p id="finale-stats-subtitle" class="finale-stats-subtitle"></p>
+        </header>
+        <nav id="finale-stats-tabs" class="finale-tabs"></nav>
+        <div id="finale-stats-body" class="finale-stats-body"></div>
+        <footer class="finale-stats-footer">
+          <div class="finale-nav-group">
+            <button id="btn-finale-prev" class="btn btn-secondary" type="button">◀ 上一页</button>
+            <button id="btn-finale-next" class="btn btn-primary" type="button">下一页 ▶</button>
+          </div>
+          <button id="btn-finale-stats-close" class="btn btn-accent btn-lg hidden" type="button">已知晓</button>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modular ES Entrypoint (run over local HTTP server, e.g. python3 -m http.server) -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

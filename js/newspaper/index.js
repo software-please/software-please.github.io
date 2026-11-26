@@ -1,0 +1,1 @@
+export { NewspaperSystem } from './NewspaperSystem.js';

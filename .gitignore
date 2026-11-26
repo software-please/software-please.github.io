@@ -1,0 +1,11 @@
+.DS_Store
+*/.DS_Store
+start.command
+spec
+AGENTS.md
+.projectmem/events.jsonl
+.projectmem/watch.pid
+.projectmem/watch.log
+.projectmem/structure.json
+.projectmem
+.codegraph

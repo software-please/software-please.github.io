@@ -1,0 +1,1 @@
+export { VerdictSystem } from './VerdictSystem.js';

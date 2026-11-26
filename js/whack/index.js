@@ -1,0 +1,1 @@
+export { WhackMinigame } from './WhackMinigame.js';
